@@ -1,0 +1,112 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adf-rhugalf-gh"
+		},
+		"AzureDataLakeStorageGHLinkedService_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageGHLinkedService'"
+		},
+		"LinkedServicesDedicatedPool_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LinkedServicesDedicatedPool'"
+		},
+		"aventuraAzureSqlDatabase_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'aventuraAzureSqlDatabase'"
+		},
+		"AzureDataLakeStorageGHLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://containerghugalf.dfs.core.windows.net/"
+		},
+		"LinkedServicesDedicatedPool_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "dedicatedpoolrhugalf.database.windows.net"
+		},
+		"LinkedServicesDedicatedPool_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "dedict_hg_sqlpool"
+		},
+		"LinkedServicesDedicatedPool_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "rhugalf"
+		},
+		"aventuraAzureSqlDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "dedicatedpoolrhugalf.database.windows.net"
+		},
+		"aventuraAzureSqlDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "dbaventuragh"
+		},
+		"aventuraAzureSqlDatabase_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "rhugalf"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adf-rhugalf-gh_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDataLakeStorageGHLinkedService_accountKey": {
+						"value": "[parameters('AzureDataLakeStorageGHLinkedService_accountKey')]"
+					},
+					"LinkedServicesDedicatedPool_password": {
+						"value": "[parameters('LinkedServicesDedicatedPool_password')]"
+					},
+					"aventuraAzureSqlDatabase_password": {
+						"value": "[parameters('aventuraAzureSqlDatabase_password')]"
+					},
+					"AzureDataLakeStorageGHLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorageGHLinkedService_properties_typeProperties_url')]"
+					},
+					"LinkedServicesDedicatedPool_properties_typeProperties_server": {
+						"value": "[parameters('LinkedServicesDedicatedPool_properties_typeProperties_server')]"
+					},
+					"LinkedServicesDedicatedPool_properties_typeProperties_database": {
+						"value": "[parameters('LinkedServicesDedicatedPool_properties_typeProperties_database')]"
+					},
+					"LinkedServicesDedicatedPool_properties_typeProperties_userName": {
+						"value": "[parameters('LinkedServicesDedicatedPool_properties_typeProperties_userName')]"
+					},
+					"aventuraAzureSqlDatabase_properties_typeProperties_server": {
+						"value": "[parameters('aventuraAzureSqlDatabase_properties_typeProperties_server')]"
+					},
+					"aventuraAzureSqlDatabase_properties_typeProperties_database": {
+						"value": "[parameters('aventuraAzureSqlDatabase_properties_typeProperties_database')]"
+					},
+					"aventuraAzureSqlDatabase_properties_typeProperties_userName": {
+						"value": "[parameters('aventuraAzureSqlDatabase_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
