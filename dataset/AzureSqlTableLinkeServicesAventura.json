@@ -1,0 +1,13 @@
+{
+	"name": "AzureSqlTableLinkeServicesAventura",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "aventuraAzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

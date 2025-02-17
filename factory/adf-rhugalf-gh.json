@@ -1,0 +1,9 @@
+{
+	"name": "adf-rhugalf-gh",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "75dc70e2-edaa-4bae-a9c8-640a348d1464",
+		"tenantId": "8d2daf18-db84-44c0-906f-05bff75d13be"
+	}
+}
