@@ -8,32 +8,14 @@
 		"AzureDataLakeStorageGHLinkedService_accountKey": {
 			"value": ""
 		},
-		"LinkedServicesDedicatedPool_password": {
+		"LinkedServicesDedicatedPool_connectionString": {
 			"value": ""
 		},
-		"aventuraAzureSqlDatabase_password": {
+		"aventuraAzureSqlDatabase_connectionString": {
 			"value": ""
 		},
 		"AzureDataLakeStorageGHLinkedService_properties_typeProperties_url": {
 			"value": "https://containerghugalf.dfs.core.windows.net/"
-		},
-		"LinkedServicesDedicatedPool_properties_typeProperties_server": {
-			"value": "dedicatedpoolrhugalf.database.windows.net"
-		},
-		"LinkedServicesDedicatedPool_properties_typeProperties_database": {
-			"value": "dedict_hg_sqlpool"
-		},
-		"LinkedServicesDedicatedPool_properties_typeProperties_userName": {
-			"value": "rhugalf"
-		},
-		"aventuraAzureSqlDatabase_properties_typeProperties_server": {
-			"value": "dedicatedpoolrhugalf.database.windows.net"
-		},
-		"aventuraAzureSqlDatabase_properties_typeProperties_database": {
-			"value": "dbaventuragh"
-		},
-		"aventuraAzureSqlDatabase_properties_typeProperties_userName": {
-			"value": "rhugalf"
 		},
 		"containerUri": {
 			"value": ""

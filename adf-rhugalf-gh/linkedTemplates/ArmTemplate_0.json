@@ -11,41 +11,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorageGHLinkedService'"
 		},
-		"LinkedServicesDedicatedPool_password": {
+		"LinkedServicesDedicatedPool_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'LinkedServicesDedicatedPool'"
+			"metadata": "Secure string for 'connectionString' of 'LinkedServicesDedicatedPool'"
 		},
-		"aventuraAzureSqlDatabase_password": {
+		"aventuraAzureSqlDatabase_connectionString": {
 			"type": "secureString",
-			"metadata": "Secure string for 'password' of 'aventuraAzureSqlDatabase'"
+			"metadata": "Secure string for 'connectionString' of 'aventuraAzureSqlDatabase'"
 		},
 		"AzureDataLakeStorageGHLinkedService_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://containerghugalf.dfs.core.windows.net/"
-		},
-		"LinkedServicesDedicatedPool_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "dedicatedpoolrhugalf.database.windows.net"
-		},
-		"LinkedServicesDedicatedPool_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "dedict_hg_sqlpool"
-		},
-		"LinkedServicesDedicatedPool_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "rhugalf"
-		},
-		"aventuraAzureSqlDatabase_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "dedicatedpoolrhugalf.database.windows.net"
-		},
-		"aventuraAzureSqlDatabase_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "dbaventuragh"
-		},
-		"aventuraAzureSqlDatabase_properties_typeProperties_userName": {
-			"type": "string",
-			"defaultValue": "rhugalf"
 		}
 	},
 	"variables": {
@@ -77,16 +53,7 @@
 				"annotations": [],
 				"type": "AzureSqlDW",
 				"typeProperties": {
-					"server": "[parameters('LinkedServicesDedicatedPool_properties_typeProperties_server')]",
-					"database": "[parameters('LinkedServicesDedicatedPool_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('LinkedServicesDedicatedPool_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('LinkedServicesDedicatedPool_password')]"
-					}
+					"connectionString": "[parameters('LinkedServicesDedicatedPool_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -99,16 +66,7 @@
 				"annotations": [],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"server": "[parameters('aventuraAzureSqlDatabase_properties_typeProperties_server')]",
-					"database": "[parameters('aventuraAzureSqlDatabase_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "SQL",
-					"userName": "[parameters('aventuraAzureSqlDatabase_properties_typeProperties_userName')]",
-					"password": {
-						"type": "SecureString",
-						"value": "[parameters('aventuraAzureSqlDatabase_password')]"
-					}
+					"connectionString": "[parameters('aventuraAzureSqlDatabase_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -309,7 +267,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "ActivityLog01.parquet",
+						"folderPath": "salida",
 						"fileSystem": "parquet"
 					},
 					"compressionCodec": "snappy"
@@ -318,6 +276,208 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorageGHLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DatasetSalesOrder')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "aventuraAzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SalesOrderID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "RevisionNumber",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "OrderDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "DueDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ShipDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Status",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "OnlineOrderFlag",
+						"type": "bit"
+					},
+					{
+						"name": "SalesOrderNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PurchaseOrderNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "AccountNumber",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CustomerID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ShipToAddressID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "BillToAddressID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ShipMethod",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreditCardApprovalCode",
+						"type": "varchar"
+					},
+					{
+						"name": "SubTotal",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "TaxAmt",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Freight",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "TotalDue",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "Comment",
+						"type": "nvarchar"
+					},
+					{
+						"name": "rowguid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "SalesLT",
+					"table": "SalesOrderHeader"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/aventuraAzureSqlDatabase')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DatasetOSalesOrderDetail')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "aventuraAzureSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SalesOrderID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SalesOrderDetailID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "OrderQty",
+						"type": "smallint",
+						"precision": 5
+					},
+					{
+						"name": "ProductID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "UnitPrice",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "UnitPriceDiscount",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "LineTotal",
+						"type": "decimal",
+						"precision": 38,
+						"scale": 6
+					},
+					{
+						"name": "rowguid",
+						"type": "uniqueidentifier"
+					},
+					{
+						"name": "ModifiedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					}
+				],
+				"typeProperties": {
+					"schema": "SalesLT",
+					"table": "SalesOrderDetail"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/aventuraAzureSqlDatabase')]"
 			]
 		},
 		{
@@ -410,6 +570,7 @@
 								"storeSettings": {
 									"type": "AzureBlobFSReadSettings",
 									"recursive": true,
+									"wildcardFileName": "*.csv",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -841,6 +1002,190 @@
 				"[concat(variables('factoryId'), '/datasets/AzureSqlTableLinkeServicesAventura')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSynapseAnalyticsTable1')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorageGHLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/01-dataflow-datawarehouse')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DatasetSalesOrder",
+								"type": "DatasetReference"
+							},
+							"name": "SalesOrderHeadersStream"
+						},
+						{
+							"dataset": {
+								"referenceName": "DatasetOSalesOrderDetail",
+								"type": "DatasetReference"
+							},
+							"name": "SalesOrderDetail"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Parquet1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "headerjoindetail"
+						},
+						{
+							"name": "selectOnlyColumns"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          SalesOrderID as integer,",
+						"          RevisionNumber as integer,",
+						"          OrderDate as timestamp,",
+						"          DueDate as timestamp,",
+						"          ShipDate as timestamp,",
+						"          Status as integer,",
+						"          OnlineOrderFlag as boolean,",
+						"          SalesOrderNumber as string,",
+						"          PurchaseOrderNumber as string,",
+						"          AccountNumber as string,",
+						"          CustomerID as integer,",
+						"          ShipToAddressID as integer,",
+						"          BillToAddressID as integer,",
+						"          ShipMethod as string,",
+						"          CreditCardApprovalCode as string,",
+						"          SubTotal as decimal(19,4),",
+						"          TaxAmt as decimal(19,4),",
+						"          Freight as decimal(19,4),",
+						"          TotalDue as decimal(19,4),",
+						"          Comment as string,",
+						"          rowguid as string,",
+						"          ModifiedDate as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> SalesOrderHeadersStream",
+						"source(output(",
+						"          SalesOrderID as integer,",
+						"          SalesOrderDetailID as integer,",
+						"          OrderQty as integer,",
+						"          ProductID as integer,",
+						"          UnitPrice as decimal(19,4),",
+						"          UnitPriceDiscount as decimal(19,4),",
+						"          LineTotal as decimal(38,6),",
+						"          rowguid as string,",
+						"          ModifiedDate as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> SalesOrderDetail",
+						"SalesOrderHeadersStream, SalesOrderDetail join(SalesOrderHeadersStream@SalesOrderID == SalesOrderDetail@SalesOrderID,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> headerjoindetail",
+						"headerjoindetail select(mapColumn(",
+						"          SalesOrderID = SalesOrderHeadersStream@SalesOrderID,",
+						"          ShipDate,",
+						"          Status,",
+						"          OnlineOrderFlag,",
+						"          SalesOrderNumber,",
+						"          PurchaseOrderNumber,",
+						"          AccountNumber,",
+						"          CustomerID,",
+						"          ShipToAddressID,",
+						"          BillToAddressID,",
+						"          ShipMethod,",
+						"          CreditCardApprovalCode,",
+						"          SubTotal,",
+						"          TaxAmt,",
+						"          Freight,",
+						"          TotalDue,",
+						"          Comment,",
+						"          rowguid = SalesOrderHeadersStream@rowguid,",
+						"          ModifiedDate = SalesOrderHeadersStream@ModifiedDate,",
+						"          SalesOrderDetailID,",
+						"          OrderQty,",
+						"          ProductID,",
+						"          UnitPrice,",
+						"          UnitPriceDiscount,",
+						"          LineTotal,",
+						"          rowguid = SalesOrderDetail@rowguid,",
+						"          ModifiedDate = SalesOrderDetail@ModifiedDate",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectOnlyColumns",
+						"selectOnlyColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/DatasetSalesOrder')]",
+				"[concat(variables('factoryId'), '/datasets/DatasetOSalesOrderDetail')]",
+				"[concat(variables('factoryId'), '/datasets/Parquet1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow-pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "01-dataflow-pipeline",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "01-dataflow-datawarehouse",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"SalesOrderHeadersStream": {},
+									"SalesOrderDetail": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/01-dataflow-datawarehouse')]"
 			]
 		}
 	]
