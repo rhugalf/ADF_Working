@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "dataflow-pipeline",
 	"properties": {
 		"activities": [
 			{
@@ -18,13 +18,6 @@
 					"dataflow": {
 						"referenceName": "01-dataflow-datawarehouse",
 						"type": "DataFlowReference"
-					},
-					"staging": {
-						"linkedService": {
-							"referenceName": "AzureDataLakeStorageGHLinkedService",
-							"type": "LinkedServiceReference"
-						},
-						"folderPath": "staging"
 					},
 					"compute": {
 						"coreCount": 8,
