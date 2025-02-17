@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "ActivityLog01.parquet",
+				"folderPath": "salida",
 				"fileSystem": "parquet"
 			},
 			"compressionCodec": "snappy"
